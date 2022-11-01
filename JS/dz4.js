@@ -1,8 +1,7 @@
 //task 1
 
-let arr = []
-
 function random(count, start, end) {
+	let arr = []
 	for (let i = 0; i < count; ++i) {
 		// let abs = Math.round(Math.abs(Math.random() * (end - start) + start));
 		let abs = Math.round(Math.random() * (end - start) + start);
@@ -10,6 +9,7 @@ function random(count, start, end) {
 	}
 	console.log(arr.length)
 	console.log(arr)
+	return arr
 }
 random(70, 100, -5)
 
@@ -57,3 +57,29 @@ function tanks() {
 
 }
 tanks()
+
+//task4 
+function days(day){
+	let array = [];
+	let week = [
+		"понедельник",
+		"вторник",
+		"среда",
+		"четверг",
+		"пятница",
+		"суббота",
+		"воскресенье"
+	];
+
+	let indexWeek = week.indexOf(day);
+
+	for (let i = 1; i < 32; i++) {
+		array.push(i);
+	}
+
+	for (let elem of array) {
+		const y = (indexWeek + elem - 1) % 7;
+		console.log(`${elem} января, ${week[y]}`);
+	}
+}
+days('четверг')
