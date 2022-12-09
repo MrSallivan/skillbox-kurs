@@ -13,3 +13,9 @@ let fruit2 = ['Ira', 'Vanya', 'Kolya']
 for (const i in fruit2) {
 	console.log(`${parseInt(i) + 1} место: ${fruit2[i]}`)
 }
+
+let fruits = ['apple', 'banana', 'tomato', 'peach', 'agava']
+
+let[apple, banana, ...fru] = fruits
+console.log(apple, banana, fru)
+
