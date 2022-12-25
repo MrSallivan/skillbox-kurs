@@ -25,15 +25,17 @@ let selectArr = [
 	{ value: 'mazda', label: 'Mazda' },
 	{ value: 'toyota', label: 'Toyota' },
 	{ value: 'suzuki', label: 'Suzuki' },
+	{ value: 'ford', label: 'Ford' },
 ]
 
-function select(arr, defolt = 0){
+function select(arr, defolt = 0) {
 
 	let selectEl = document.createElement('select')
 	document.body.append(selectEl)
 
-	arr.forEach((item) => {
+	arr.forEach((item, index) => {
 		let opt = document.createElement('option')
+		if ((defolt > 0) && (defolt == index)) opt.setAttribute('selected', 'selected')
 		opt.value = item.value
 		opt.innerHTML = item.label
 		selectEl.append(opt)
@@ -41,7 +43,7 @@ function select(arr, defolt = 0){
 	})
 }
 
-select(selectArr)
+select(selectArr, 5)
 
 /* <select name="select" id="sel">
 	<option value="null" selected>Select option</option>
