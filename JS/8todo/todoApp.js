@@ -47,7 +47,7 @@
 		let doneButton = document.createElement('button')
 		let deleteButton = document.createElement('buttton')
 
-		item.classList.add('list-groupe-item', 'd-flex', 'justify-content-between', 'align-items-center')
+		item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center')
 		item.textContent = name
 
 		buttonGroup.classList.add('btn-group', 'btn-group-sm')
@@ -67,10 +67,10 @@
 		}
 	}
 
-	document.addEventListener('DOMContentLoaded', function () {
-		let container = document.querySelector('#todo-app')
+	function createTodoApp(container, title = 'Список дел') {
 
-		let todoAppTitle = createAppTitle('Список дел.')
+
+		let todoAppTitle = createAppTitle(title)
 		let todoItemForm = createTodoItemForm()
 		let todoList = createTodoList()
 
@@ -79,16 +79,39 @@
 		container.append(todoItemForm.form)
 		container.append(todoList)
 
+		todoItemForm.button.setAttribute('disabled', 'true')
+
+
 		todoItemForm.form.addEventListener('submit', function (e) {
 			e.preventDefault()
 
 			if (!todoItemForm.input.value) {
 				return
 			}
-			todoList.append(createTodoItem(todoItemForm.input.value).item)
+
+			let todoItem = createTodoItem(todoItemForm.input.value)
+
+			todoItem.doneButton.addEventListener('click', () => {
+				todoItem.item.classList.toggle('list-group-item-success')
+			})
+			todoItem.deleteButton.addEventListener('click', () => {
+				if (confirm('Вы уверены?')) {
+					todoItem.item.remove()
+				}
+			})
+
+			todoList.append(todoItem.item)
 
 			todoItemForm.input.value = ''
 		})
-	})
+	}
+
+	function isFormEmpty() {
+
+	}
+
+
+
+	window.createTodoApp = createTodoApp
 
 })()
