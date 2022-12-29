@@ -67,8 +67,22 @@
 		}
 	}
 
-	function createTodoApp(container, title = 'Список дел') {
 
+
+	function createTodoApp(container, title = 'Список дел', listTodos) {
+
+		function isFormEmpty() {
+			todoItemForm.button.setAttribute('disabled', 'true')
+
+			window.addEventListener('input', (e) => {
+				if (e.target.value !== '') {
+					todoItemForm.button.removeAttribute('disabled')
+				} else {
+					todoItemForm.button.setAttribute('disabled', 'true')
+				}
+			})
+
+		}
 
 		let todoAppTitle = createAppTitle(title)
 		let todoItemForm = createTodoItemForm()
@@ -79,8 +93,31 @@
 		container.append(todoItemForm.form)
 		container.append(todoList)
 
-		todoItemForm.button.setAttribute('disabled', 'true')
+		if (listTodos) {
 
+			listTodos.forEach((itemList) => {
+				let listTodosItem = createTodoItem(itemList.name)
+				if (itemList.done) {
+					listTodosItem.item.classList.toggle('list-group-item-success')
+				}
+				
+				listTodosItem.doneButton.addEventListener('click', () => {
+					listTodosItem.item.classList.toggle('list-group-item-success')
+				})
+
+				listTodosItem.deleteButton.addEventListener('click', () => {
+					if (confirm('Вы уверены?')) {
+						listTodosItem.item.remove()
+					}
+				})
+
+				todoList.append(listTodosItem.item)
+
+			})
+
+		}
+
+		isFormEmpty()
 
 		todoItemForm.form.addEventListener('submit', function (e) {
 			e.preventDefault()
@@ -103,12 +140,16 @@
 			todoList.append(todoItem.item)
 
 			todoItemForm.input.value = ''
+
+			if (todoItemForm.input.value === '') {
+				todoItemForm.button.setAttribute('disabled', 'true')
+			}
 		})
+
+
+
 	}
 
-	function isFormEmpty() {
-
-	}
 
 
 
