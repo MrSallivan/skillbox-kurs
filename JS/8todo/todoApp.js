@@ -87,11 +87,39 @@
 		let todoAppTitle = createAppTitle(title)
 		let todoItemForm = createTodoItemForm()
 		let todoList = createTodoList()
-
+		let localItems = JSON.parse(localStorage.getItem(title));
 
 		container.append(todoAppTitle)
 		container.append(todoItemForm.form)
 		container.append(todoList)
+
+		// -----------------
+		//  localStorage
+		if (localItems === null) {
+			localItems = [];
+		}
+
+		if (localItems.length > 0) {
+			for (let count of localItems) {
+				let todoItem = createTodoItem(count.name, count.done);
+				todoItem.doneButton.addEventListener('click', function () {
+					todoItem.item.classList.toggle('list-group-item-success');
+					localItems.find(x => x.name == todoItem.item.name).done = todoItem.item.classList.contains('list-group-item-success');
+					localStorage.setItem(title, JSON.stringify(localItems));
+				});
+
+				todoItem.deleteButton.addEventListener('click', function () {
+					if (confirm('Вы уверены')) {
+						localItems.splice(localItems.indexOf(x => x.name == todoItem.item.name), 1);
+						todoItem.item.remove();
+						localStorage.setItem(title, JSON.stringify(localItems));
+					}
+				});
+
+				todoList.append(todoItem.item);
+			}
+		}
+
 
 		if (listTodos) {
 
@@ -100,7 +128,7 @@
 				if (itemList.done) {
 					listTodosItem.item.classList.toggle('list-group-item-success')
 				}
-				
+
 				listTodosItem.doneButton.addEventListener('click', () => {
 					listTodosItem.item.classList.toggle('list-group-item-success')
 				})
@@ -127,13 +155,19 @@
 			}
 
 			let todoItem = createTodoItem(todoItemForm.input.value)
+			localItems.push({ name: todoItemForm.input.value, done: false });
+			localStorage.setItem(title, JSON.stringify(localItems));
 
 			todoItem.doneButton.addEventListener('click', () => {
 				todoItem.item.classList.toggle('list-group-item-success')
+				localItems.find(x => x.name == todoItem.item.name).done = todoItem.item.classList.contains('list-group-item-success');
+				localStorage.setItem(title, JSON.stringify(localItems));
 			})
 			todoItem.deleteButton.addEventListener('click', () => {
 				if (confirm('Вы уверены?')) {
-					todoItem.item.remove()
+					localItems.splice(localItems.indexOf(x => x.name == todoItem.item.name), 1);
+					todoItem.item.remove();
+					localStorage.setItem(title, JSON.stringify(localItems));
 				}
 			})
 
@@ -149,7 +183,6 @@
 
 
 	}
-
 
 
 
